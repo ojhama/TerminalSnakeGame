@@ -12,7 +12,7 @@ curses.curs_set(0)
 win.border(0)
 win.nodelay(1)
 
-# snake, food ans score initialization
+# snake, food and score initialization
 snake = [(6, 15), (6, 14), (6, 13)]
 food = (15, 25)
 win.addch(food[0], food[1], '#')
@@ -29,13 +29,13 @@ while key != ESC:
     # Addding score text at top left corner
     win.addstr(0, 2, ' SCORE ' + str(score) + ' ')
 
-    # setting different sppeds while movinf vertically and horizontally
+    # setting different sppeds while moving vertically and horizontally
     if key in [curses.KEY_UP or curses.KEY_DOWN]:
         win.timeout(150-(len(snake)) // 8)
     else:
         win.timeout(150-(len(snake)*2) // 5)
 
-    # checking if any valid key was presses. If not keep the last key entry
+    # checking if any valid key was presses. If not. keep the last key entry
     prev_key = key
     event = win.getch()
     key = event if event != -1 else prev_key
@@ -56,7 +56,7 @@ while key != ESC:
     if key == curses.KEY_RIGHT:
         x += 1
 
-    # if new head is going out of the screen, teleporting it to the begining of opposite boundry
+    # if new head is going out of the boundry, teleporting it to the begining of the opposite boundry
     if y == 0:
         y = yMax-2
     if y == yMax-1:
@@ -73,8 +73,9 @@ while key != ESC:
     if snake[0] in snake[1:]:
         break
 
-    # if snake head falls on same spot a food, then creating a new food at different location,
-    # and if not, then removing the tail of snake to let it keep moving
+    # if snake head falls on same spot of the food, then creating a new food at different location
+    # ( not removing tail, so that size increases by 1 every time it eats food )
+    # and if the new head does not fall on the food, then removing the tail of snake to let it keep moving with the same size
     if snake[0] == food:
         score += 1
         food = ()
