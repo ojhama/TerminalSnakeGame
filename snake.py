@@ -36,9 +36,17 @@ while key != ESC:
         x -= 1
     if key == curses.KEY_RIGHT:
         x += 1
+
+    if y == 0:
+        y = yMax-2
+    if y == yMax-1:
+        y = 1
+    if x == 0:
+        x = xMax-2
+    if x == xMax-1:
+        x = 1
+
     snake.insert(0, (y, x))
-    if y == 0 or y == yMax-1 or x == 0 or x == xMax-1:
-        break
     if snake[0] in snake[1:]:
         break
     if snake[0] == food:
