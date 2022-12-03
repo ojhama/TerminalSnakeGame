@@ -1,14 +1,16 @@
 import curses
 from random import randint
 curses.initscr()
-win = curses.newwin(20, 60, 0, 0)  # y,x
+xMax = 60
+yMax = 20
+win = curses.newwin(yMax, xMax, 0, 0)
 win.keypad(1)
 curses.noecho()
 curses.curs_set(0)
 win.border(0)
 win.nodelay(1)
-snake = [(4, 10), (4, 9), (4, 8)]
-food = (10, 20)
+snake = [(6, 15), (6, 14), (6, 13)]
+food = (15, 25)
 win.addch(food[0], food[1], '#')
 score = 0
 ESC = 27
@@ -35,7 +37,7 @@ while key != ESC:
     if key == curses.KEY_RIGHT:
         x += 1
     snake.insert(0, (y, x))
-    if y == 0 or y == 19 or x == 0 or x == 59:
+    if y == 0 or y == yMax-1 or x == 0 or x == xMax-1:
         break
     if snake[0] in snake[1:]:
         break
@@ -43,7 +45,7 @@ while key != ESC:
         score += 1
         food = ()
         while food == ():
-            food = (randint(1, 18), randint(1, 58))
+            food = (randint(1, yMax-2), randint(1, xMax-2))
             if food in snake:
                 food = ()
         win.addch(food[0], food[1], '#')
@@ -60,8 +62,8 @@ win.addch(food[0], food[1], ' ')
 win.border(0)
 messg = "GAME OVER !! FINAL SCORE : "
 messg2 = "PRESS ESC KEY TO EXIT!"
-win.addstr(8, 15, messg + str(score))
-win.addstr(10, 18, messg2)
+win.addstr(8, xMax//2-len(messg)//2, messg + str(score))
+win.addstr(10, xMax//2-len(messg2)//2+1, messg2)
 key = -1
 while key != ESC:
     key = win.getch()
